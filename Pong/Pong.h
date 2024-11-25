@@ -11,11 +11,13 @@
 #define IMG_SPACE 00
 #define BALL_SPEED 1
 #define BAR_SPEED 1
+#define ACELARATION 0.15
 
 #define UPKEY 65362
 #define DOWNKEY 65364
 #define ESCAPEKEY 65307
-#define WINSCORE 10
+#define SPACEKEY 32
+#define WINSCORE 5
 
 #define ABS(x) ((x) < 0 ? -(x) : (x))
 //MLX stuff
@@ -78,6 +80,7 @@ typedef struct s_keystates{
 	int key_up;
 	int key_down;
 
+	int pause;
 	int esc;
 
 }t_keystates;
@@ -88,6 +91,11 @@ typedef struct s_game{
 	t_ball	ball;
 	t_bar	right_bar;
 	t_bar	left_bar;
+
+	my_img	score_img[WINSCORE];
+	my_img	right_win_img;
+	my_img	left_win_img;
+
 	int		right_score;
 	int		left_score;
 
@@ -96,6 +104,7 @@ typedef struct s_game{
 	void			*win;
 	my_img			board_img;
 	my_img			img;
+	my_img			pause_img;
 
 	t_keystates		keystates;
 
@@ -117,6 +126,12 @@ int		my_exit(t_game *game);
 void	key_handler(t_game *game);
 void	start_ball(t_game *game);
 
+long long int	get_time_mil();
 long long int 	delta_time(void);
+
+void	init_score_imgs(t_game *game);
+void	clean_score_imgs(t_game *game);
+void	put_black(my_img *img, int x, int y, my_img *put);
+void	put_non_white(my_img *img, int x, int y, my_img *put);
 
 #endif

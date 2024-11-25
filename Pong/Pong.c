@@ -7,6 +7,10 @@ void clean_game(t_game *game)
 	clean_img(game->left_bar.img, game->mlx);
 	clean_img(game->board_img, game->mlx);
 	clean_img(game->img, game->mlx);
+	//clean_img(game->left_win_img, game->mlx);
+	//clean_img(game->right_win_img, game->mlx);
+	clean_score_imgs(game);
+	clean_img(game->pause_img, game->mlx);
 
 	if(game->mlx)
 	{
@@ -87,9 +91,28 @@ t_game	*init_game(void)
 		return(NULL);
 	}
 
+	// init score images
+
+	init_score_imgs(game);
+	// if(get_img(&game->right_win_img,"WinImgs/right_win_img.xpm", game->mlx))
+	// 	printf("FALURE1\n");
+	// if(get_img(&game->left_win_img,"WinImgs/left_win_img.xpm", game->mlx))
+	// 	printf("FALURE2\n");
+
+	
+
+	//init pause image
+
+	if(get_img(&game->pause_img,"ScoreImgs/pause.xpm", game->mlx))
+	{
+		clean_game(game);
+		return(NULL);
+	}
+
 	//init game image
 	get_img(&game->img,"Imgs/board_img.xpm", game->mlx);
 	game->win = mlx_new_window(game->mlx, game->img.width, game->img.height, "Pong");
+
 
 	//init ball position
 	start_ball(game);
@@ -107,10 +130,27 @@ t_game	*init_game(void)
 	return(game);
 }
 
+void	my_wait(long long int time)
+{
+	long long int start = get_time_mil();
+
+	while(get_time_mil() - start < time)
+	{
+
+	}
+}
+
 int		loop_function(t_game *game)
 {
 	//set delta time
 	game->delta_time = delta_time();
+
+	if(game->keystates.pause == 1)
+	{
+		put_black(&game->img, game->img.width / 2, game->img.height / 2, &game->pause_img);
+		mlx_put_image_to_window(game->mlx, game->win, game->img.data.img, 0, 0);
+		return(0);
+	}
 
 	//check colision
 
@@ -118,7 +158,25 @@ int		loop_function(t_game *game)
 
 	//check points
 
-	if (game->left_score >= WINSCORE || game->right_score >= WINSCORE)
+	// if (game->right_score >= WINSCORE)
+	// {
+	// 	put_img(&game->img, game->img.width / 2, game->img.height / 2, &game->right_win_img);
+	// 	mlx_put_image_to_window(game->mlx, game->win, game->img.data.img, 0, 0);
+	// 	my_wait(3000);
+	// 	clean_game(game);
+	// 	exit(0);
+	// }
+
+	// if (game->left_score >= WINSCORE)
+	// {
+	// 	put_img(&game->img, game->img.width / 2, game->img.height / 2, &game->left_win_img);
+	// 	mlx_put_image_to_window(game->mlx, game->win, game->img.data.img, 0, 0);
+	// 	my_wait(3000);
+	// 	clean_game(game);
+	// 	exit(0);
+	// }
+
+	if (game->right_score >= WINSCORE || game->left_score >= WINSCORE)
 	{
 		clean_game(game);
 		exit(0);
@@ -135,6 +193,10 @@ int		loop_function(t_game *game)
 	game->ball.x_pos += (game->ball.x_velocity * game->delta_time);
 	game->ball.y_pos += (game->ball.y_velocity * game->delta_time);
 
+	//game->ball.x_velocity += game->ball.x_velocity * (game->delta_time / 100) * ACELARATION;
+	//game->ball.y_velocity += game->ball.y_velocity * (game->delta_time / 100)* ACELARATION;
+
+
 
 	// change image
 	put_img(&game->img, game->img.width / 2, game->img.height / 2, &game->board_img);
@@ -142,8 +204,13 @@ int		loop_function(t_game *game)
 	put_img(&game->img, roundf(game->left_bar.x_pos), roundf(game->left_bar.y_pos) , &game->left_bar.img);
 	put_img(&game->img, roundf(game->right_bar.x_pos), roundf(game->right_bar.y_pos) , &game->right_bar.img);
 
+	//Display score
+
+	put_non_white(&game->img, roundf(game->img.width * 1/5), game->img.height * 1/8, &(game->score_img[game->left_score]));
+	put_non_white(&game->img, roundf(game->img.width * 4/5), game->img.height * 1/8, &(game->score_img[game->right_score]));
 
 	//put image to screen
+
 	mlx_put_image_to_window(game->mlx, game->win, game->img.data.img, 0, 0);
 
 	return(0);

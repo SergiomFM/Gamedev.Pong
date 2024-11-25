@@ -5,7 +5,7 @@ CC_FLAGS = -Wall -Wextra -Werror -ffast-math -O3 -Ofast
 MLXLIB = minilibx-linux/minilibx-linux
 MLXFLAGS = $(MLXLIB)/libmlx_Linux.a -lXext -lX11 -lm -lz
 
-SRCS =   img.c Pong.c main.c colisions.c events.c delta_time.c
+SRCS =   img.c Pong.c main.c colisions.c events.c delta_time.c score.c
 
 
 OBJS = $(SRCS:.c=.o)

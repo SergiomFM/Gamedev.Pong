@@ -19,6 +19,13 @@ int	key_down(int keycode, t_game *game)
 		game->keystates.key_down = 1;
 	else if(keycode == ESCAPEKEY)
 		game->keystates.esc = 1;
+	else if(keycode == 'p' || keycode == SPACEKEY)
+	{
+		if(game->keystates.pause)
+			game->keystates.pause = 0;
+		else
+			game->keystates.pause = 1;
+	}
 	return(0);
 }
 
