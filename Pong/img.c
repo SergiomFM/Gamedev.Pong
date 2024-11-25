@@ -108,6 +108,31 @@ void	put_non_white(my_img *img, int x, int y, my_img *put)
 	
 }
 
+void	put_non_white2(my_img *img, int x, int y, my_img *put)
+{
+	int				i;
+	int 			j;
+	unsigned int	color;
+
+	i = 0;
+
+	while(i < put->height)
+	{
+		j = 0;
+		while (j < put->width)
+		{
+			if(x + j - (put->width / 2) < img->width && y + i - (put->height / 2) < img->height && x + j - (put->width / 2) > 0 && y + i - (put->height / 2) > 0)
+			{
+				color =  get_color(&put->data, j, i);
+				if(color < 16777215)
+					pixel_put(&img->data ,x + j - (put->width / 2), y + i - (put->height / 2), color);		
+			}
+			j++;
+		}
+		i++;
+	}
+	
+}
 
 // void	put_img(my_img *img, int x, int y, my_img *put)
 // {

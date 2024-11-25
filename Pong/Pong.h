@@ -133,5 +133,6 @@ void	init_score_imgs(t_game *game);
 void	clean_score_imgs(t_game *game);
 void	put_black(my_img *img, int x, int y, my_img *put);
 void	put_non_white(my_img *img, int x, int y, my_img *put);
+void	put_non_white2(my_img *img, int x, int y, my_img *put);
 
 #endif

@@ -200,7 +200,7 @@ int		loop_function(t_game *game)
 
 	// change image
 	put_img(&game->img, game->img.width / 2, game->img.height / 2, &game->board_img);
-	put_img(&game->img, roundf(game->ball.x_pos), roundf(game->ball.y_pos) , &game->ball.img);
+	put_non_white2(&game->img, roundf(game->ball.x_pos), roundf(game->ball.y_pos) , &game->ball.img);
 	put_img(&game->img, roundf(game->left_bar.x_pos), roundf(game->left_bar.y_pos) , &game->left_bar.img);
 	put_img(&game->img, roundf(game->right_bar.x_pos), roundf(game->right_bar.y_pos) , &game->right_bar.img);
 
